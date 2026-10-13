@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 V = '6'
 
-META = dict(path='', title='Kusekwa · Clasa a XII-a, Liceul Integritas',
-            desc='Clasa a XII-a a Liceului Internațional Integritas pleacă o lună la Kusekwa, lângă Bariadi, în Tanzania. 12 ianuarie – 10 februarie 2027.',
+META = dict(path='', title='Misiune în Tanzania: donează pentru Kusekwa | Integritas',
+            desc='Clasa a XII-a a Liceului Integritas pleacă o lună la Kusekwa, lângă Bariadi, să construiască o biserică și un dispensar. Donează online sau prin transfer.',
             preload='<link rel="preload" href="assets/img/scoala-2400.webp" as="image">')
 
 CLASSES = {
@@ -29,18 +29,17 @@ CLASSES = {
     'heroline': 'invisible absolute bottom-0 left-0 max-w-[12em] [&.is-on]:visible',
     'filmclip': 'absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] '
                 '[transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100',
-    'beat': 'grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[12vh] '
-            'wide:min-h-svh wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[14vh]',
+    'beat': 'grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] '
+            'wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]',
     'kicker': 'm-0 mb-4 text-[13px] leading-[1.3] font-semibold text-ochre',
     'beath': 'm-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]',
     'beatpic': 'm-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]',
     'beatimg': 'size-full object-cover saturate-[.9] contrast-[1.04] will-change-transform',
     'amb': 'absolute inset-0 size-full object-cover opacity-0 blur-[70px] brightness-[.38] saturate-[1.2] '
            'transition-opacity duration-[1200ms] ease-soft [&.is-on]:opacity-100',
-    'fr': 'relative flex-none cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[58vh] wide:h-[min(68vh,760px)] '
-          'opacity-[.32] scale-[.84] [transition:opacity_.9s_var(--ease-soft),scale_.9s_var(--ease-soft),box-shadow_.9s_var(--ease-soft)] '
-          '[&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_50px_120px_rgba(0,0,0,.55)] '
-          'motion-reduce:snap-center motion-reduce:opacity-100 motion-reduce:scale-100',
+    'fr': 'relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] '
+          'opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] '
+          '[&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none',
     'frmedia': 'block h-full w-auto max-w-[84vw] object-cover wide:max-w-none',
     'frvideo': 'aspect-[var(--ar,9/16)]',
     'bankrow': 'm-0 grid grid-cols-[5.4rem_minmax(0,1fr)_auto] items-center gap-2 border-t border-bone/15 py-3 text-sm',
@@ -54,6 +53,7 @@ CLASSES = {
     'foothead': 'm-0 mb-3 text-xs leading-none font-bold tracking-[.08em] uppercase text-ochre',
     'footlink': 'text-bone/80 underline-offset-4 transition-colors hover:text-bone hover:underline',
     'social': 'grid size-10 place-items-center rounded-full bg-bone/10 text-bone transition-colors hover:bg-ochre hover:text-ink',
+    'reelbtn': 'grid size-11 cursor-pointer place-items-center rounded-full bg-bone/10 text-[26px] leading-none text-bone transition-colors hover:bg-bone/20 disabled:cursor-default disabled:opacity-30',
     'lbnav': 'absolute top-1/2 hidden size-[52px] -translate-y-1/2 cursor-pointer rounded-full bg-bone/10 text-[30px] leading-none hover:bg-bone/20 wide:block',
 }
 
@@ -78,7 +78,12 @@ def sized(html):
     return re.sub(r'<img\b[^>]*>', fix, html)
 
 
+def card(name):
+    return (ROOT / 'parts' / 'card.html').read_text().replace('@', name).rstrip()
+
+
 def fill(text):
+    text = re.sub(r'\{card:(\w+)\}', lambda m: card(m.group(1)), text)
     return re.sub(r'\{(\w+)\}', lambda m: V if m.group(1) == 'v' else CLASSES[m.group(1)], text)
 
 
