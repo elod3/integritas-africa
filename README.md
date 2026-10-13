@@ -23,11 +23,12 @@ Cât timp `stripeLink` e gol, butoanele duc la transferul bancar (care se deschi
 
 Apple Pay apare doar unde merge (Safari pe Mac/iPhone). Pe alte browsere SDK-ul Apple îl ascunde.
 
-## Clipurile (YouTube)
+## Clipurile
 
-Clipurile nu stau în repo: sunt pe YouTube, **nelistate** (se văd doar cu link), pe canalul lui Előd.
-În `pages/index.html` fiecare are `data-yt="<id>"`; site-ul pune iframe-ul (youtube-nocookie) abia când e nevoie:
-în fundal când ajungi la secțiunea lui, în galerie când dai click. Până atunci se vede posterul `.webp`.
+- **Buclele** (fundalul secțiunilor și cadrele cu clip din galerie) sunt MP4-uri mici, fără sunet, în `assets/loop/`
+  (~2,3 MB toate, fiecare se încarcă abia când e nevoie de el). N-au butoane peste ele, spre deosebire de playerul YouTube.
+- **Clipurile întregi, cu sunet** sunt pe YouTube, **nelistate**, pe canalul lui Előd; click pe un clip din galerie
+  îl deschide de acolo în vizor (`data-yt="<id>"` în `pages/index.html`).
 
 | Clip | ID |
 |---|---|

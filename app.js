@@ -45,60 +45,41 @@ const CONFIG = {
     return $$('[data-ch]', el);
   }
 
-  /* ---------- YOUTUBE: clipurile stau pe YouTube (nelistate); iframe-ul se pune abia când e nevoie de el ---------- */
-  // fără loop=1/playlist (YouTube ar pune butoane de playlist peste clip): bucla o facem noi prin API-ul iframe-ului
-  const ytSrc = (id, bg) => `https://www.youtube-nocookie.com/embed/${id}?` + new URLSearchParams(bg
-    ? { autoplay: 1, mute: 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, iv_load_policy: 3, fs: 0, enablejsapi: 1, origin: location.origin }
-    : { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 });
-  const ytSay = (f, func, args = []) => f?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
-  addEventListener('message', (e) => {
-    if (!/youtube(-nocookie)?\.com$/.test(new URL(e.origin).hostname)) return;
-    let d; try { d = JSON.parse(e.data); } catch (err) { return; }
-    const f = [...document.querySelectorAll('iframe[data-bg]')].find((x) => x.contentWindow === e.source);
-    if (!f) return;
-    const state = d.event === 'onStateChange' ? d.info : d.info?.playerState;
-    if (state === 0) { ytSay(f, 'seekTo', [0, true]); ytSay(f, 'playVideo'); }   // s-a terminat: de la capăt
-    if (state === 1) {                                                              // a pornit: îl arătăm peste poster
-      f.classList.add('is-on');
-      f.parentElement.querySelector('span[aria-hidden]')?.classList.add('opacity-0');
-      // clipurile de fundal pregătite din timp așteaptă pe pauză până le vine rândul
-      if (f.closest('#film') && !f.parentElement.classList.contains('is-on')) ytSay(f, 'pauseVideo');
-    }
-  });
-  const ytFrame = (id, bg, cls) => {
+  /* ---------- CLIPURILE ----------
+     Buclele scurte (fundal, galerie) sunt MP4-uri mici, fără sunet, în assets/loop: se încarcă abia când e nevoie
+     și n-au butoane peste ele. Clipurile întregi, cu sunet, sunt pe YouTube (nelistate) și se deschid în vizor. */
+  const LOOP = 'absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-700 [&.is-on]:opacity-100';
+  const loopVideo = (src) => {
+    const v = document.createElement('video');
+    Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto', src, className: LOOP });   // pornește doar când îl pornim noi
+    v.setAttribute('aria-hidden', 'true');
+    v.addEventListener('playing', () => v.classList.add('is-on'), { once: true });   // apare peste poster când rulează
+    return v;
+  };
+  const ytFrame = (id, cls) => {
     const f = document.createElement('iframe');
-    f.src = ytSrc(id, bg); f.className = cls; f.title = bg ? '' : 'Clip de la Kusekwa';
-    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.loading = 'lazy';
-    if (bg) {
-      f.tabIndex = -1; f.setAttribute('aria-hidden', 'true'); f.dataset.bg = '';
-      // ne abonăm la evenimentele playerului, ca să aflăm când se termină clipul
-      f.addEventListener('load', () => f.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: f.dataset.yt || 1, channel: 'widget' }), '*'));
-    }
+    f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
+    f.className = cls; f.title = 'Clip de la Kusekwa'; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     return f;
   };
-  // fundalul: un iframe 16:9 mai mare decât ecranul, ca să-l acopere ca object-fit: cover
-  // cu 20% mai mare: marginile tăiate ascund titlul și logoul YouTube; apare abia după ce pornește, peste poster
-  const BG_FRAME = 'pointer-events-none absolute top-1/2 left-1/2 h-[max(120vh,67.5vw)] w-[max(120vw,213.34vh)] -translate-1/2 border-0 opacity-0 transition-opacity duration-1000 [&.is-on]:opacity-100';
 
   /* ---------- FILMUL DIN SPATE: planuri care se schimbă de la o secțiune la alta ---------- */
   const film = $('#film'), clips = film ? [...film.children] : [];
   let clipOn = -1;
-  // iframe-ul se pune o dată și rămâne; între secțiuni doar pornim și oprim clipurile
-  const ensure = (box) => { if (box && !box.querySelector('iframe')) box.appendChild(ytFrame(box.dataset.yt, true, BG_FRAME)); };
-  const frameOf = (i) => clips[i]?.querySelector('iframe');
+  const ensure = (box) => { if (box && !$('video', box)) box.appendChild(loopVideo(box.dataset.loop)); };
+  const vidOf = (i) => clips[i] && $('video', clips[i]);
   function show(i) {
     if (i === clipOn || !clips[i]) return;
     if (clipOn >= 0) {
       const old = clips[clipOn]; old.classList.remove('is-on');
-      setTimeout(() => { if (!old.classList.contains('is-on')) ytSay(old.querySelector('iframe'), 'pauseVideo'); }, 1700);
+      setTimeout(() => { if (!old.classList.contains('is-on')) $('video', old)?.pause(); }, 1700);
     }
     clipOn = i;
-    ensure(clips[i]); ensure(clips[i + 1]);   // și pe următorul, ca să fie gata când ajungi la el
+    ensure(clips[i]); ensure(clips[i + 1]);   // și următorul, ca să fie gata când ajungi la el
     clips[i].classList.add('is-on');
-    ytSay(frameOf(i), 'playVideo');
+    vidOf(i)?.play().catch(() => {});
   }
-  const pauseFilm = () => clips.forEach((c) => ytSay(c.querySelector('iframe'), 'pauseVideo'));
-  // primul clip se pregătește imediat după ce s-a încărcat pagina, ca să fie deja pornit când ajungi la el
+  const pauseFilm = () => clips.forEach((c) => $('video', c)?.pause());
   addEventListener('load', () => setTimeout(() => ensure(clips[0]), 1200), { once: true });
 
   /* ---------- NAVBAR ---------- */
@@ -152,7 +133,7 @@ const CONFIG = {
         ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onEnter: () => show(i), onEnterBack: () => show(i) });
       });
       ScrollTrigger.create({ trigger: '#scoala', start: 'top bottom', end: 'bottom top',
-        onLeave: pauseFilm, onEnterBack: () => ytSay(frameOf(clipOn), 'playVideo') });
+        onLeave: pauseFilm, onEnterBack: () => vidOf(clipOn)?.play().catch(() => {}) });
       $$('[data-beat]').forEach((b) => {
         const h = $('h2', b), pic = $('figure', b), rest = $$('[data-rest]', b);
         const tl = gsap.timeline({ scrollTrigger: { trigger: b, start: 'top 75%', toggleActions: 'play none none reverse' } });
@@ -189,15 +170,13 @@ const CONFIG = {
       ambI ^= 1; amb[ambI].src = poster(frames[i]); amb[ambI].classList.add('is-on'); amb[ambI ^ 1].classList.remove('is-on');
     }
     // clipurile pornesc singure (fără sunet, în buclă) când cadrul lor e în mijloc și galeria e pe ecran
-    const GAL_FRAME = 'pointer-events-none absolute top-1/2 left-1/2 h-[118%] w-[118%] -translate-1/2 border-0 opacity-0 transition-opacity duration-700 [&.is-on]:opacity-100';
     let galVisible = false;
     function autoplay() {
       frames.forEach((fr, j) => {
-        const img = mediaOf(fr), on = galVisible && j === active && img.dataset.yt;
-        const f = $('iframe', fr), badge = $('span[aria-hidden]', fr);
-        if (on && !f) {
-          fr.appendChild(ytFrame(img.dataset.yt, true, GAL_FRAME));
-        } else if (!on && f) { f.remove(); badge?.classList.remove('opacity-0'); }
+        const img = mediaOf(fr), on = galVisible && j === active && img.dataset.loop;
+        const v = $('video', fr);
+        if (on) { const x = v || fr.appendChild(loopVideo(img.dataset.loop)); x.play().catch(() => {}); }
+        else if (v) v.pause();
       });
     }
     new IntersectionObserver(([e]) => { galVisible = e.isIntersecting; autoplay(); }, { threshold: .25 }).observe($('#galerie'));
@@ -238,7 +217,7 @@ const CONFIG = {
       if (src.dataset.yt) {
         // clipurile vin de pe YouTube; rama are proporția posterului (orizontal sau vertical)
         const vertical = src.naturalHeight > src.naturalWidth;
-        el = ytFrame(src.dataset.yt, false, `${LB_MEDIA} border-0 ${vertical ? 'aspect-[9/16] h-full w-auto' : 'aspect-video w-full h-auto'}`);
+        el = ytFrame(src.dataset.yt, `${LB_MEDIA} border-0 ${vertical ? 'aspect-[9/16] h-full w-auto' : 'aspect-video w-full h-auto'}`);
       } else {
         el = document.createElement('img'); el.className = LB_MEDIA; el.src = src.dataset.full; el.alt = src.alt;
       }
