@@ -53,7 +53,7 @@ CLASSES = {
               'peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ochre',
     'foothead': 'm-0 mb-3 text-xs leading-none font-bold tracking-[.08em] uppercase text-ochre',
     'footlink': 'text-bone/80 underline-offset-4 transition-colors hover:text-bone hover:underline',
-    'social': 'rounded-btn bg-bone/10 px-3 py-2 text-[13px] leading-none font-semibold text-bone transition-colors hover:bg-bone/20',
+    'social': 'grid size-10 place-items-center rounded-full bg-bone/10 text-bone transition-colors hover:bg-ochre hover:text-ink',
     'lbnav': 'absolute top-1/2 hidden size-[52px] -translate-y-1/2 cursor-pointer rounded-full bg-bone/10 text-[30px] leading-none hover:bg-bone/20 wide:block',
 }
 
