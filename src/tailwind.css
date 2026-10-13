@@ -1,0 +1,41 @@
+/* Karibu Kusekwa — tot stilul e în clasele Tailwind din index.html și app.js.
+   Aici stau doar tema (culori, font, curbe) și fontul local.
+   Căile din url() sunt față de style.css (în rădăcină), nu față de fișierul ăsta: Tailwind nu le mută. */
+@import "tailwindcss";
+@source "../index.html";
+@source "../app.js";
+
+@font-face { font-family: "Archivo"; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap;
+  src: url(assets/fonts/archivo-latin-standard-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212; }
+@font-face { font-family: "Archivo"; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap;
+  src: url(assets/fonts/archivo-latin-ext-standard-normal.woff2) format("woff2");
+  unicode-range: U+0100-02AF, U+0218-021B, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@theme {
+  --font-sans: "Archivo", "Helvetica Neue", sans-serif;
+
+  --color-ink: #0b0908;        /* negrul cald */
+  --color-panel: #161210;
+  --color-raise: #1f1a17;
+  --color-bone: #f2ece3;       /* textul */
+  --color-ochre: #e0a040;      /* singurul accent: pământul de la Bariadi la apus */
+
+  --spacing-gut: clamp(18px, 4vw, 56px);   /* marginea paginii */
+
+  --radius-btn: 10px;
+  --radius-card: 16px;
+  --radius-frame: 24px;
+
+  --ease-soft: cubic-bezier(.22, .8, .2, 1);
+  --ease-cine: cubic-bezier(.76, 0, .24, 1);
+
+  --breakpoint-wide: 821px;    /* de aici în sus: două coloane, rola pe orizontală la etape */
+
+  --animate-grain: grain .6s steps(4) infinite;
+  @keyframes grain {
+    25% { transform: translate(-3%, 2%); }
+    50% { transform: translate(2%, -3%); }
+    75% { transform: translate(-1%, 3%); }
+  }
+}
