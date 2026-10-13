@@ -41,7 +41,7 @@ CLASSES = {
           'opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] '
           '[&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none',
     'frmedia': 'block h-full w-auto max-w-[84vw] object-cover wide:max-w-none',
-    'play': 'pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)]',
+    'play': 'pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)] transition-opacity duration-500',
     'bankrow': 'm-0 grid grid-cols-[5.4rem_minmax(0,1fr)_auto] items-center gap-2 border-t border-bone/15 py-3 text-sm',
     'banklabel': 'text-[11px] leading-tight font-bold tracking-[.06em] uppercase text-ochre',
     'bankvalue': 'font-sans text-sm leading-tight tracking-[.02em] tabular-nums break-words',

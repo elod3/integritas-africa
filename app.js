@@ -46,14 +46,28 @@ const CONFIG = {
   }
 
   /* ---------- YOUTUBE: clipurile stau pe YouTube (nelistate); iframe-ul se pune abia când e nevoie de el ---------- */
+  // fără loop=1/playlist (YouTube ar pune butoane de playlist peste clip): bucla o facem noi prin API-ul iframe-ului
   const ytSrc = (id, bg) => `https://www.youtube-nocookie.com/embed/${id}?` + new URLSearchParams(bg
-    ? { autoplay: 1, mute: 1, loop: 1, playlist: id, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, iv_load_policy: 3, fs: 0 }
+    ? { autoplay: 1, mute: 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, iv_load_policy: 3, fs: 0, enablejsapi: 1, origin: location.origin }
     : { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 });
+  const ytSay = (f, func, args = []) => f.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
+  addEventListener('message', (e) => {
+    if (!/youtube(-nocookie)?\.com$/.test(new URL(e.origin).hostname)) return;
+    let d; try { d = JSON.parse(e.data); } catch (err) { return; }
+    const f = [...document.querySelectorAll('iframe[data-bg]')].find((x) => x.contentWindow === e.source);
+    if (!f) return;
+    const state = d.event === 'onStateChange' ? d.info : d.info?.playerState;
+    if (state === 0) { ytSay(f, 'seekTo', [0, true]); ytSay(f, 'playVideo'); }   // s-a terminat: de la capăt
+  });
   const ytFrame = (id, bg, cls) => {
     const f = document.createElement('iframe');
     f.src = ytSrc(id, bg); f.className = cls; f.title = bg ? '' : 'Clip de la Kusekwa';
     f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.loading = 'lazy';
-    if (bg) { f.tabIndex = -1; f.setAttribute('aria-hidden', 'true'); }
+    if (bg) {
+      f.tabIndex = -1; f.setAttribute('aria-hidden', 'true'); f.dataset.bg = '';
+      // ne abonăm la evenimentele playerului, ca să aflăm când se termină clipul
+      f.addEventListener('load', () => f.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: f.dataset.yt || 1, channel: 'widget' }), '*'));
+    }
     return f;
   };
   // fundalul: un iframe 16:9 mai mare decât ecranul, ca să-l acopere ca object-fit: cover
@@ -162,10 +176,27 @@ const CONFIG = {
       if (i === active) return;
       active = i;
       frames.forEach((fr, j) => fr.classList.toggle('is-on', j === i));
+      autoplay();
       nEl.textContent = `${String(i + 1).padStart(2, '0')} / ${total}`;
       prev.disabled = i === 0; next.disabled = i === frames.length - 1;
       ambI ^= 1; amb[ambI].src = poster(frames[i]); amb[ambI].classList.add('is-on'); amb[ambI ^ 1].classList.remove('is-on');
     }
+    // clipurile pornesc singure (fără sunet, în buclă) când cadrul lor e în mijloc și galeria e pe ecran
+    const GAL_FRAME = 'pointer-events-none absolute top-1/2 left-1/2 h-[118%] w-[118%] -translate-1/2 border-0 opacity-0 transition-opacity duration-700 [&.is-on]:opacity-100';
+    let galVisible = false;
+    function autoplay() {
+      frames.forEach((fr, j) => {
+        const img = mediaOf(fr), on = galVisible && j === active && img.dataset.yt;
+        const f = $('iframe', fr), badge = $('span[aria-hidden]', fr);
+        if (on && !f) {
+          const nf = ytFrame(img.dataset.yt, true, GAL_FRAME);
+          nf.addEventListener('load', () => setTimeout(() => { nf.classList.add('is-on'); badge?.classList.add('opacity-0'); }, 1800), { once: true });
+          fr.appendChild(nf);
+        } else if (!on && f) { f.remove(); badge?.classList.remove('opacity-0'); }
+      });
+    }
+    new IntersectionObserver(([e]) => { galVisible = e.isIntersecting; autoplay(); }, { threshold: .25 }).observe($('#galerie'));
+
     // cadrul cel mai aproape de mijlocul rolei e cel treaz
     const nearest = () => {
       const mid = track.scrollLeft + track.clientWidth / 2;
@@ -210,8 +241,8 @@ const CONFIG = {
       $('#lbN').textContent = `${String(lbI + 1).padStart(2, '0')} / ${total}`;
       if (motion) gsap.fromTo(el, { opacity: 0, scale: .96 }, { opacity: 1, scale: 1, duration: .5, ease: 'power3.out' });
     }
-    function openLb(i) { lbShow(i); lb.showModal(); if (lenis) lenis.stop(); }
-    lb.addEventListener('close', () => { lbMedia.replaceChildren(); if (lenis) lenis.start(); goTo(lbI); });
+    function openLb(i) { galVisible = false; autoplay(); lbShow(i); lb.showModal(); if (lenis) lenis.stop(); }
+    lb.addEventListener('close', () => { lbMedia.replaceChildren(); if (lenis) lenis.start(); galVisible = true; goTo(lbI); autoplay(); });
     lb.addEventListener('click', (e) => {
       const b = e.target.closest('[data-lb]');
       if (b) { const a = b.dataset.lb; if (a === 'close') lb.close(); else lbShow(lbI + (a === 'next' ? 1 : -1)); return; }
