@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ro" class="overflow-x-clip [scrollbar-gutter:stable] [&.is-loading]:overflow-hidden">
+<html lang="ro" class="overflow-x-clip [scrollbar-gutter:stable]">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,6 @@
 <link rel="preload" href="assets/fonts/archivo-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/img/scoala-2400.webp" as="image">
 <link rel="stylesheet" href="style.css?v=6">
-<script>document.documentElement.classList.add('js', 'is-loading')</script>
 <meta property="og:image:alt" content="Copiii de la școala Kusekwa, lângă Bariadi, Tanzania">
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@graph": [
@@ -39,25 +38,7 @@
 ]}
 </script>
 </head>
-<body class="overflow-x-clip bg-ink font-sans text-base/relaxed text-bone selection:bg-ochre selection:text-ink in-[.is-loading]:overflow-hidden [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-3 [&_:focus-visible]:outline-ochre">
-<!-- LOADER: genericul de început. Cartela, apoi drumul oraș cu oraș, cu kilometrii adunați,
-     apoi școala apare într-o ramă rotunjită care se lărgește și devine hero-ul -->
-<div id="loader" aria-hidden="true" class="fixed inset-0 z-100 hidden cursor-pointer bg-ink in-[.js]:block">
-  <div id="ldFrame" class="absolute inset-0 overflow-hidden bg-panel opacity-0">
-    <img src="assets/img/scoala-2400.webp" alt="" class="absolute inset-0 size-full object-cover scale-[1.02] saturate-[.88] contrast-[1.05]" width="2400" height="1351">
-  </div>
-  <p id="ldCard" class="absolute inset-0 z-3 m-0 grid place-content-center text-center">
-    <span class="pl-[.3em] text-[13px] leading-none font-semibold tracking-[.3em] uppercase">Liceul Internațional Integritas</span>
-    <em class="mt-3 text-[15px] leading-none italic text-ochre">prezintă</em>
-  </p>
-  <div id="ldRoute" class="absolute inset-0 z-3 grid place-content-center justify-items-center text-center opacity-0 pointer-events-none">
-    <p id="ldCity" class="m-0 whitespace-nowrap text-[clamp(40px,12vw,72px)] wide:text-[clamp(48px,9vw,150px)] leading-[1.02] font-[760] font-stretch-108% tracking-[-.04em]">&nbsp;</p>
-    <p class="mt-[18px] text-sm leading-none font-semibold text-bone/65"><b id="ldKm" class="text-lg font-[650] text-ochre tabular-nums">0</b> km</p>
-    <div class="mt-[26px] h-0.5 w-[min(60vw,520px)] overflow-hidden rounded-xs bg-bone/15"><i id="ldLine" class="block h-full w-0 bg-ochre"></i></div>
-  </div>
-  <p id="ldSkip" class="absolute bottom-6 left-1/2 z-3 m-0 -translate-x-1/2 text-xs leading-none font-medium text-bone/40">Click ca să treci peste</p>
-</div>
-
+<body class="overflow-x-clip bg-ink font-sans text-base/relaxed text-bone selection:bg-ochre selection:text-ink [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-3 [&_:focus-visible]:outline-ochre">
 <!-- NAVBAR: o bară care plutește; se umple când cobori și se ascunde când derulezi în jos -->
 <header id="nav" class="fixed inset-x-2.5 top-2.5 z-30 flex items-center gap-2 rounded-card py-2 pr-2 pl-4 text-bone transition-[background-color,translate,box-shadow] duration-700 ease-soft wide:inset-x-3 wide:top-3 wide:gap-[clamp(16px,3vw,40px)] wide:py-2.5 wide:pr-2.5 wide:pl-5 [&.is-hidden]:-translate-y-[calc(100%+16px)] [&.is-solid]:bg-panel/95 [&.is-solid]:shadow-[0_10px_40px_rgba(0,0,0,.35),inset_0_0_0_1px_rgba(242,236,227,.14)]">
   <a href="#acasa" class="mr-auto flex items-center" aria-label="Liceul Internațional Integritas, la începutul paginii">
@@ -86,15 +67,14 @@
       <div class="absolute inset-0 bg-linear-to-t from-ink via-ink/55 via-45% to-ink/10"></div>
       <div class="absolute inset-0 hidden bg-linear-to-r from-ink/70 via-ink/20 via-50% to-ink/50 wide:block"></div>
     </div>
-    <div class="relative z-10 mx-auto grid min-h-svh max-w-[1440px] grid-cols-1 items-end gap-8 px-gut pt-28 pb-10 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:gap-[clamp(32px,5vw,88px)] wide:pb-[clamp(40px,8vh,88px)]">
+    <div class="relative z-10 mx-auto grid max-w-[1440px] grid-cols-1 content-start gap-6 px-gut pt-24 pb-10 wide:min-h-svh wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:grid-rows-[auto_1fr] wide:gap-x-[clamp(32px,5vw,88px)] wide:gap-y-6 wide:pt-[clamp(110px,16vh,170px)] wide:pb-[clamp(40px,8vh,88px)]">
       <div data-hero-copy class="max-w-[760px]">
-        <p data-hero-in class="m-0 mb-5 text-[13px] leading-[1.3] font-semibold text-ochre">Misiune în Tanzania · 12 ianuarie – 10 februarie 2027</p>
-        <h1 id="heroTitle" class="m-0 text-[clamp(40px,5.4vw,88px)] leading-[1] font-[760] font-stretch-108% tracking-[-.04em]">Ajută-ne să construim o biserică și un dispensar în Tanzania.</h1>
-        <p data-hero-in class="mt-6 max-w-xl text-[clamp(16px,1.3vw,19px)] leading-relaxed text-bone/85">30 de oameni de la Liceul Integritas, dintre care 20 de elevi, pleacă o lună la școala Kusekwa, lângă Bariadi. Fiecare donație pune o cărămidă.</p>
+        <p data-hero-in class="m-0 mb-4 text-[15px] leading-[1.3] font-bold tracking-[.02em] text-ochre">Misiune Tanzania · 12 ianuarie – 10 februarie 2027</p>
+        <h1 id="heroTitle" class="m-0 text-[clamp(38px,5.4vw,88px)] leading-[1] font-[760] font-stretch-108% tracking-[-.04em]">Ajută-ne să construim o biserică și un dispensar în Tanzania.</h1>
       </div>
-      <div data-hero-in>
+      <div data-hero-in class="wide:col-start-2 wide:row-span-2 wide:row-start-1">
       <div data-give class="grid gap-4 rounded-frame bg-ink/95 p-4 shadow-[0_30px_80px_rgba(0,0,0,.45),inset_0_0_0_1px_rgba(242,236,227,.14)] wide:p-[22px]">
-        <p class="m-0 text-lg leading-tight font-[650]">Pune o cărămidă</p>
+        <p class="m-0 text-lg leading-tight font-[650]">Pune și tu o cărămidă</p>
         <!-- ONLINE: suma aleasă merge la Stripe Payment Link (CONFIG în capul app.js) -->
         <fieldset class="m-0 grid grid-cols-2 gap-2 border-0 p-0">
           <legend class="sr-only">Alege suma</legend>
@@ -131,31 +111,32 @@
         <p class="m-0 text-[12.5px] leading-snug text-bone/55">Banii ajung la Fundația Educatio Plena, fundația Liceului Integritas.</p>
       </div>
       </div>
+      <p data-hero-in class="m-0 max-w-xl text-[clamp(16px,1.3vw,19px)] leading-relaxed text-bone/85 wide:col-start-1 wide:row-start-2">30 de oameni de la Liceul Integritas, dintre care 20 de elevi, pleacă o lună la școala Kusekwa, lângă Bariadi. Pune și tu o cărămidă.</p>
     </div>
   </section>
 
-  <!-- FILMUL DIN SPATE: filmările de la școală, întunecate; se schimbă de la o secțiune la alta -->
+  <!-- FILMUL DIN SPATE: filmările de la școală (pe YouTube, nelistate), întunecate; se încarcă abia când ajungi la ele -->
   <div id="film" aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-ink after:absolute after:inset-0 after:bg-[radial-gradient(120%_90%_at_50%_50%,rgba(11,9,8,0)_40%,rgba(11,9,8,.7)_100%)] after:content-['']">
-    <video muted playsinline loop preload="none" poster="assets/film/curte.webp" data-src="assets/film/curte.mp4" class="absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"></video>
-    <video muted playsinline loop preload="none" poster="assets/film/clasa.webp" data-src="assets/film/clasa.mp4" class="absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"></video>
-    <video muted playsinline loop preload="none" poster="assets/film/cor.webp" data-src="assets/film/cor.mp4" class="absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"></video>
-    <video muted playsinline loop preload="none" poster="assets/film/careu.webp" data-src="assets/film/careu.mp4" class="absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"></video>
+    <div data-yt="As-tGlI0Fdw" class="absolute inset-0 overflow-hidden opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"><img src="assets/film/curte.webp" alt="" loading="lazy" class="absolute inset-0 size-full object-cover" width="1280" height="720"></div>
+    <div data-yt="zyvZzugyF6s" class="absolute inset-0 overflow-hidden opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"><img src="assets/film/clasa.webp" alt="" loading="lazy" class="absolute inset-0 size-full object-cover" width="1280" height="720"></div>
+    <div data-yt="28YPTOssxh0" class="absolute inset-0 overflow-hidden opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"><img src="assets/film/cor.webp" alt="" loading="lazy" class="absolute inset-0 size-full object-cover" width="1280" height="720"></div>
+    <div data-yt="rMd4yMUqTeU" class="absolute inset-0 overflow-hidden opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] [transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100"><img src="assets/film/careu.webp" alt="" loading="lazy" class="absolute inset-0 size-full object-cover" width="1280" height="720"></div>
   </div>
 
   <div id="scoala" class="relative z-1">
-    <section data-beat data-film="0" class="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]">
+    <section data-beat data-film="0" class="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-6 px-gut py-12 wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:gap-[clamp(28px,6vw,96px)] wide:py-[clamp(48px,8vh,96px)]">
       <div><p data-rest class="m-0 mb-4 text-[13px] leading-[1.3] font-semibold text-ochre">Bariadi · Tanzania</p><h2 class="m-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]">700 de oameni.<br>O școală.</h2></div>
       <figure class="m-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]"><img class="size-full object-cover saturate-[.9] contrast-[1.04] will-change-transform" src="assets/img/careu-1200.webp" srcset="assets/img/careu-1200.webp 1200w, assets/img/careu-2400.webp 2400w" sizes="(min-width: 821px) 46vw, 92vw" alt="Elevii școlii Kusekwa, aliniați în curte" loading="lazy" width="1200" height="900"></figure>
     </section>
-    <section data-beat data-film="1" class="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]">
+    <section data-beat data-film="1" class="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-6 px-gut py-12 wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:gap-[clamp(28px,6vw,96px)] wide:py-[clamp(48px,8vh,96px)]">
       <div class="wide:order-2"><h2 class="m-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]">O tablă.<br>O clasă plină.</h2></div>
       <figure class="m-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]"><img class="size-full object-cover saturate-[.9] contrast-[1.04] will-change-transform" src="assets/img/clasa-1200.webp" srcset="assets/img/clasa-1200.webp 1200w, assets/img/clasa-2400.webp 2400w" sizes="(min-width: 821px) 46vw, 92vw" alt="Elevi în bănci, într-o clasă plină" loading="lazy" width="1080" height="810"></figure>
     </section>
-    <section data-beat data-film="2" class="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]">
+    <section data-beat data-film="2" class="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-6 px-gut py-12 wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:gap-[clamp(28px,6vw,96px)] wide:py-[clamp(48px,8vh,96px)]">
       <div><h2 class="m-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]">Biserica se strânge<br>în sala școlii.</h2></div>
       <figure class="m-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]"><img class="size-full object-cover saturate-[.9] contrast-[1.04] will-change-transform" src="assets/img/biserica-2400.webp" alt="Adunarea bisericii Kusekwa Memorial, în sala școlii" loading="lazy" width="1008" height="756"></figure>
     </section>
-    <section data-beat data-film="3" class="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]">
+    <section data-beat data-film="3" class="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-6 px-gut py-12 wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:gap-[clamp(28px,6vw,96px)] wide:py-[clamp(48px,8vh,96px)]">
       <div class="wide:order-2"><h2 class="m-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]">30 de oameni.<br>O lună.</h2><p data-rest class="mt-[18px] text-[clamp(16px,1.3vw,19px)] text-bone/85">20 de elevi. O biserică și un dispensar.</p></div>
       <figure class="m-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]"><img class="size-full object-cover saturate-[.9] contrast-[1.04] will-change-transform" src="assets/img/sapat-1200.webp" srcset="assets/img/sapat-1200.webp 1000w, assets/img/sapat-2400.webp 1600w" sizes="(min-width: 821px) 46vw, 92vw" alt="Oameni care sapă lângă școală" loading="lazy" width="1000" height="750"></figure>
     </section>
@@ -175,27 +156,27 @@
       </div>
       <ol id="reel" data-lenis-prevent-wheel class="relative z-3 m-0 flex list-none snap-x snap-mandatory items-center gap-[clamp(12px,2vw,28px)] overflow-x-auto overscroll-x-contain px-[max(var(--spacing-gut),calc(50vw-34vh))] py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f03-s.webp" data-full="assets/gal/f03.webp" alt="Elevii de la Integritas și sute de elevi africani, în sala cea mare" width="800" height="600"></li>
-          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><video class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none aspect-[var(--ar,9/16)]" muted playsinline loop preload="none" poster="assets/gal/v01.webp" data-src="assets/gal/v01.mp4" aria-label="Copiii fac cu mâna spre cameră"></video></li>
+          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/v01.webp" data-yt="8pc8_PnY3-w" alt="Clip: Copiii fac cu mâna spre cameră" width="848" height="478"><span aria-hidden="true" class="pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)]">▶</span></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f01-s.webp" data-full="assets/gal/f01.webp" alt="Selfie cu două eleve de la Integritas și o clasă întreagă de copii" width="800" height="600"></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f07-s.webp" data-full="assets/gal/f07.webp" alt="Un elev de la Integritas face selfie cu o clasă care lucrează în bănci" width="800" height="600"></li>
-          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><video class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none aspect-[var(--ar,9/16)]" muted playsinline loop preload="none" poster="assets/gal/v02.webp" data-src="assets/gal/v02.mp4" aria-label="O elevă de la Integritas desenează pe tablă"></video></li>
+          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/v02.webp" data-yt="HVuLQVL8-h8" alt="Clip: O elevă de la Integritas desenează pe tablă" width="480" height="848"><span aria-hidden="true" class="pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)]">▶</span></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f02-s.webp" data-full="assets/gal/f02.webp" alt="O stradă cu blocuri, mașini parcate și cer senin" width="600" height="800"></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f04-s.webp" data-full="assets/gal/f04.webp" alt="Atelierul: saci de ciment, scânduri și o bancă de lucru" width="600" height="800"></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f08-s.webp" data-full="assets/gal/f08.webp" alt="Doi oameni sudează, cu scântei, în atelier" width="800" height="600"></li>
-          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><video class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none aspect-[var(--ar,9/16)]" muted playsinline loop preload="none" poster="assets/gal/v03.webp" data-src="assets/gal/v03.mp4" aria-label="Se taie o placă cu fierăstrăul"></video></li>
+          <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/v03.webp" data-yt="vm9Qisqb5tA" alt="Clip: Se taie o placă cu fierăstrăul" width="478" height="850"><span aria-hidden="true" class="pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)]">▶</span></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f06-s.webp" data-full="assets/gal/f06.webp" alt="Un profesor de la Integritas îi strânge mâna unui meșter, în atelier" width="600" height="800"></li>
           <li class="relative flex-none snap-center cursor-zoom-in overflow-hidden rounded-frame bg-panel h-[56vh] wide:h-[min(64vh,720px)] opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] [&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none"><img class="block h-full w-auto max-w-[84vw] object-cover wide:max-w-none" loading="lazy" src="assets/gal/f05-s.webp" data-full="assets/gal/f05.webp" alt="Trei oameni la o bancă nouă, făcută în atelier" width="800" height="450"></li>
       </ol>
     </section>
 
     <!-- DONAȚIA, din nou la final: același card ca în hero -->
-    <section id="doneaza" aria-labelledby="giveTitle" class="relative mx-2 mb-2 grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] rounded-frame bg-panel px-4 pt-[72px] pb-4 wide:mx-3 wide:mb-3 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:py-[clamp(64px,10vh,120px)] wide:px-[max(calc(var(--spacing-gut)-12px),calc(50%-732px+var(--spacing-gut)))]">
+    <section id="doneaza" aria-labelledby="giveTitle" class="relative mx-2 mb-2 grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] rounded-frame bg-panel px-4 pt-[72px] pb-4 wide:mx-3 wide:mb-3 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:py-[clamp(64px,10vh,120px)] wide:px-[max(calc(var(--spacing-gut)-12px),calc(50%-732px+var(--spacing-gut)))]">
       <div class="px-1.5 wide:px-0">
         <h2 id="giveTitle" class="m-0 text-[clamp(48px,7vw,124px)] leading-[.95] font-[760] font-stretch-108% tracking-[-.04em]">Pune o<br>cărămidă.</h2>
         <p data-rest class="mt-5 max-w-md text-[clamp(16px,1.4vw,20px)] text-bone/65">O biserică și un dispensar pentru Kusekwa. Puțin și puțin umple măsura.</p>
       </div>
       <div data-give class="grid gap-4 rounded-frame bg-ink/95 p-4 shadow-[0_30px_80px_rgba(0,0,0,.45),inset_0_0_0_1px_rgba(242,236,227,.14)] wide:p-[22px]">
-        <p class="m-0 text-lg leading-tight font-[650]">Pune o cărămidă</p>
+        <p class="m-0 text-lg leading-tight font-[650]">Pune și tu o cărămidă</p>
         <!-- ONLINE: suma aleasă merge la Stripe Payment Link (CONFIG în capul app.js) -->
         <fieldset class="m-0 grid grid-cols-2 gap-2 border-0 p-0">
           <legend class="sr-only">Alege suma</legend>

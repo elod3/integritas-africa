@@ -5,7 +5,7 @@
 Pagina misiunii clasei a XII-a de la Liceul Internațional Integritas: o lună la Școala Kusekwa,
 lângă Bariadi, în Tanzania (12 ianuarie – 10 februarie 2027).
 
-O singură pagină, statică (fără server): genericul cu drumul, școala, galeria și donația.
+O singură pagină, statică (fără server): hero cu donația, școala, galeria și donația din nou.
 Stilul e numai **Tailwind CSS v4**.
 
 ## Plata online (Stripe)
@@ -23,6 +23,22 @@ Cât timp `stripeLink` e gol, butoanele duc la transferul bancar (care se deschi
 
 Apple Pay apare doar unde merge (Safari pe Mac/iPhone). Pe alte browsere SDK-ul Apple îl ascunde.
 
+## Clipurile (YouTube)
+
+Clipurile nu stau în repo: sunt pe YouTube, **nelistate** (se văd doar cu link), pe canalul lui Előd.
+În `pages/index.html` fiecare are `data-yt="<id>"`; site-ul pune iframe-ul (youtube-nocookie) abia când e nevoie:
+în fundal când ajungi la secțiunea lui, în galerie când dai click. Până atunci se vede posterul `.webp`.
+
+| Clip | ID |
+|---|---|
+| Curtea școlii | As-tGlI0Fdw |
+| În clasă | zyvZzugyF6s |
+| Corul | 28YPTOssxh0 |
+| Careul de dimineață | rMd4yMUqTeU |
+| Copiii fac cu mâna | 8pc8_PnY3-w |
+| La tablă | HVuLQVL8-h8 |
+| În atelier | vm9Qisqb5tA |
+
 ## Transfer bancar
 
 Fundația Educatio Plena, Raiffeisen Bank, cu mențiunea **Africa Kusekwa**. Datele sunt în `pages/index.html`.
@@ -39,7 +55,8 @@ python3 -m http.server 8763   # apoi http://localhost:8763
   (`CLASSES`), pentru clasele care se repetă (cadrele din galerie, rândurile de la transfer).
 - `parts/head.html`: `<head>` (titlu, descriere, imaginea pentru WhatsApp/Facebook).
 - `src/tailwind.css`: tema (culori, font, margini, colțuri) și fontul local Archivo.
-- `app.js`: animațiile (GSAP + ScrollTrigger + Lenis, locale în `assets/vendor/`) și plata.
+- `parts/card.html`: cardul de donație (apare în hero și la final).
+- `app.js`: animațiile (GSAP + ScrollTrigger + Lenis, locale în `assets/vendor/`), clipurile de pe YouTube și plata.
 - **Nu edita `index.html` și `style.css` direct**: le rescrie `build.py`.
 
 ## Publicare

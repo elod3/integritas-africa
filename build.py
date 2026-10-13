@@ -27,10 +27,10 @@ CLASSES = {
                '[transition:opacity_1.8s_var(--ease-soft),scale_9s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-[1.02] '
                'motion-reduce:transition-none',
     'heroline': 'invisible absolute bottom-0 left-0 max-w-[12em] [&.is-on]:visible',
-    'filmclip': 'absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] '
+    'filmclip': 'absolute inset-0 overflow-hidden opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] '
                 '[transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100',
-    'beat': 'mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] '
-            'wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]',
+    'beat': 'mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-6 px-gut py-12 '
+            'wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:gap-[clamp(28px,6vw,96px)] wide:py-[clamp(48px,8vh,96px)]',
     'kicker': 'm-0 mb-4 text-[13px] leading-[1.3] font-semibold text-ochre',
     'beath': 'm-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]',
     'beatpic': 'm-0 aspect-[4/3] overflow-hidden rounded-frame bg-panel shadow-[0_40px_90px_rgba(0,0,0,.4)]',
@@ -41,7 +41,7 @@ CLASSES = {
           'opacity-60 scale-[.94] [transition:opacity_.6s_var(--ease-soft),scale_.6s_var(--ease-soft),box-shadow_.6s_var(--ease-soft)] '
           '[&.is-on]:opacity-100 [&.is-on]:scale-100 [&.is-on]:shadow-[0_40px_100px_rgba(0,0,0,.55)] motion-reduce:transition-none',
     'frmedia': 'block h-full w-auto max-w-[84vw] object-cover wide:max-w-none',
-    'frvideo': 'aspect-[var(--ar,9/16)]',
+    'play': 'pointer-events-none absolute top-1/2 left-1/2 grid size-16 -translate-1/2 place-items-center rounded-full bg-ink/75 pl-1 text-2xl text-bone shadow-[0_8px_30px_rgba(0,0,0,.4)]',
     'bankrow': 'm-0 grid grid-cols-[5.4rem_minmax(0,1fr)_auto] items-center gap-2 border-t border-bone/15 py-3 text-sm',
     'banklabel': 'text-[11px] leading-tight font-bold tracking-[.06em] uppercase text-ochre',
     'bankvalue': 'font-sans text-sm leading-tight tracking-[.02em] tabular-nums break-words',

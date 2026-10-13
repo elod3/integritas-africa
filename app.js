@@ -1,4 +1,4 @@
-/* Kusekwa — o singură pagină: genericul cu drumul, școala, galeria, donația (Stripe sau transfer).
+/* Kusekwa — o singură pagină: hero cu donația, școala, galeria, donația din nou (Stripe sau transfer).
    Stilul e numai Tailwind; JS-ul se agață de id-uri și de atribute data-*, iar clasele pe care le
    pune singur (literele, vizorul) sunt tot clase Tailwind. */
 /* PLATA ONLINE — singurul loc de schimbat. Cine are contul Stripe al fundației face un Payment Link
@@ -23,59 +23,6 @@ const CONFIG = {
     : new Promise((r) => { img.addEventListener('load', r, { once: true }); img.addEventListener('error', r, { once: true }); });
   const fmt = (n) => Math.round(n).toLocaleString('ro-RO');
 
-  /* ---------- LOADER: cartela, drumul oraș cu oraș, apoi școala într-o ramă care devine hero-ul ---------- */
-  const ROUTE = [['Târgu Mureș', 0], ['Budapesta', 432], ['Istanbul', 1497], ['Nairobi', 6272], ['Bariadi', 6737]];
-  async function runLoader(onDone) {
-    const loader = $('#loader');
-    let seen = false; try { seen = sessionStorage.getItem('kk5-seen') === '1'; } catch (e) {}
-    if (!motion) { loader.remove(); html.classList.remove('is-loading'); return false; }
-    // la fiecare intrare; a doua oară în aceeași vizită merge mai repede, iar un click îl sare
-    let speed = seen ? 1.8 : 1;
-    gsap.globalTimeline.timeScale(speed);
-    loader.addEventListener('click', () => { speed = 6; gsap.globalTimeline.timeScale(6); });
-    const pause = (ms) => wait(ms / speed);
-    const frame = $('#ldFrame'), card = $('#ldCard'), route = $('#ldRoute'), city = $('#ldCity'), kmEl = $('#ldKm'), line = $('#ldLine');
-    const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-    // rama în pixeli, ca GSAP să poată anima clip-path-ul fără salturi
-    const vw = innerWidth / 100, vh = innerHeight / 100, narrow = innerWidth <= 820;
-    const ty = narrow ? innerHeight / 2 - 30 * vw : innerHeight / 2 - Math.min(17 * vw, 19 * vh);
-    const tx = narrow ? 8 * vw : innerWidth / 2 - Math.min(30 * vw, 34 * vh);
-    // start și final dați amândoi, cu câte 4 valori: Firefox scurtează inset(a b a b) la inset(a b), iar dacă GSAP
-    // citește valoarea din pagină, perechile nu se mai potrivesc și rama crește din colțul stânga-jos
-    const ramaMica = `inset(${ty}px ${tx}px ${ty}px ${tx}px round 24px)`;
-    gsap.set(frame, { opacity: 0, clipPath: ramaMica });
-    gsap.fromTo(card.children, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .9, stagger: .3, ease: 'power2.out' });
-    await Promise.all([pause(1500), fonts, Promise.race([loaded($('img', frame)), wait(3500)])]);
-    await gsap.to(card, { opacity: 0, duration: .45, ease: 'power1.in' });
-
-    // drumul: fiecare oraș urcă din mască, kilometrii se adună până la el
-    gsap.set(route, { opacity: 1 });
-    const km = { v: 0 };
-    for (const [k, [name, dist]] of ROUTE.entries()) {
-      city.textContent = name;
-      gsap.fromTo(split(city, true), { yPercent: 105 }, { yPercent: 0, duration: .7, ease: 'power4.out', stagger: .018 });
-      gsap.to(km, { v: dist, duration: .6, ease: 'power2.out', onUpdate: () => (kmEl.textContent = fmt(km.v)) });
-      gsap.to(line, { width: `${(k / (ROUTE.length - 1)) * 100}%`, duration: .6, ease: 'power2.out' });
-      await pause(k === ROUTE.length - 1 ? 1000 : 720);
-      if (k < ROUTE.length - 1) await gsap.to(split(city), { yPercent: -105, duration: .25, ease: 'power3.in', stagger: .008 });
-    }
-    await gsap.to(route, { opacity: 0, duration: .4 });
-    gsap.to('#ldSkip', { opacity: 0, duration: .3 });
-
-    // școala apare în ramă, apoi rama se lărgește și devine hero-ul (același cadru: match cut)
-    await gsap.fromTo(frame, { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: .8, ease: 'power3.out' });
-    await pause(350);
-    try { sessionStorage.setItem('kk5-seen', '1'); } catch (e) {}
-    await gsap.fromTo(frame, { clipPath: ramaMica }, { clipPath: 'inset(0px 0px 0px 0px round 0px)', duration: 1.25, ease: 'power4.inOut' });
-    gsap.globalTimeline.timeScale(1);
-    // rama are acum exact cadrul hero-ului (aceeași poză, aceeași scară): loaderul dispare dintr-o dată,
-    // fără fade, ca să nu se vadă două poze una peste alta; umbra și textul hero-ului vin după
-    html.classList.remove('is-loading');
-    onDone();
-    loader.remove();
-    return true;
-  }
-
   /* ---------- literele urcă din spatele unei măști (cuvântul taie ce iese; padding jos pentru Ș/Ț) ---------- */
   const WORD = 'inline-block overflow-hidden whitespace-nowrap align-bottom pt-[.2em] pb-[.14em] -mt-[.12em] -mb-[.14em]';
   function split(el, again) {
@@ -98,16 +45,39 @@ const CONFIG = {
     return $$('[data-ch]', el);
   }
 
+  /* ---------- YOUTUBE: clipurile stau pe YouTube (nelistate); iframe-ul se pune abia când e nevoie de el ---------- */
+  const ytSrc = (id, bg) => `https://www.youtube-nocookie.com/embed/${id}?` + new URLSearchParams(bg
+    ? { autoplay: 1, mute: 1, loop: 1, playlist: id, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, iv_load_policy: 3, fs: 0 }
+    : { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 });
+  const ytFrame = (id, bg, cls) => {
+    const f = document.createElement('iframe');
+    f.src = ytSrc(id, bg); f.className = cls; f.title = bg ? '' : 'Clip de la Kusekwa';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.loading = 'lazy';
+    if (bg) { f.tabIndex = -1; f.setAttribute('aria-hidden', 'true'); }
+    return f;
+  };
+  // fundalul: un iframe 16:9 mai mare decât ecranul, ca să-l acopere ca object-fit: cover
+  // cu 20% mai mare: marginile tăiate ascund titlul și logoul YouTube; apare abia după ce pornește, peste poster
+  const BG_FRAME = 'pointer-events-none absolute top-1/2 left-1/2 h-[max(120vh,67.5vw)] w-[max(120vw,213.34vh)] -translate-1/2 border-0 opacity-0 transition-opacity duration-1000 [&.is-on]:opacity-100';
+
   /* ---------- FILMUL DIN SPATE: planuri care se schimbă de la o secțiune la alta ---------- */
   const film = $('#film'), clips = film ? [...film.children] : [];
   let clipOn = -1;
-  const load = (v) => { if (v && v.tagName === 'VIDEO' && !v.src) { v.src = v.dataset.src; v.load(); } };
   function show(i) {
     if (i === clipOn || !clips[i]) return;
-    if (clipOn >= 0) { const old = clips[clipOn]; old.classList.remove('is-on'); if (old.pause) setTimeout(() => old.pause(), 1700); }
+    if (clipOn >= 0) {
+      const old = clips[clipOn]; old.classList.remove('is-on');
+      // iframe-ul vechi pleacă după fade, ca să nu ruleze degeaba
+      setTimeout(() => { if (!old.classList.contains('is-on')) old.querySelector('iframe')?.remove(); }, 1800);
+    }
     clipOn = i;
-    const v = clips[i]; load(v); load(clips[i + 1]);
-    v.classList.add('is-on'); if (v.play) v.play().catch(() => {});
+    const box = clips[i];
+    if (!box.querySelector('iframe')) {
+      const f = ytFrame(box.dataset.yt, true, BG_FRAME);
+      f.addEventListener('load', () => setTimeout(() => f.classList.add('is-on'), 2200), { once: true });
+      box.appendChild(f);
+    }
+    box.classList.add('is-on');
   }
 
   /* ---------- NAVBAR ---------- */
@@ -143,11 +113,10 @@ const CONFIG = {
 
   /* =================== ȘCOALA: hero fix + povestea peste film =================== */
   function acasa() {
-    function heroIn(matchCut) {
+    function heroIn() {
       if (!motion) return;
-      if (matchCut) gsap.from('[data-shade]', { opacity: 0, duration: 1.4, ease: 'power2.out' });
       // poza are deja scale 1.02 din CSS; transformul GSAP vine peste ea și se șterge la final
-      else gsap.fromTo('[data-hero] img', { scale: 1.12 }, { scale: 1, duration: 2.4, ease: 'power3.out', clearProps: 'transform' });
+      gsap.fromTo('[data-hero] img', { scale: 1.12 }, { scale: 1, duration: 2.4, ease: 'power3.out', clearProps: 'transform' });
       gsap.fromTo(split($('#heroTitle')), { yPercent: 105 }, { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: .012, delay: .35 });
       gsap.from('[data-hero-in]', { y: 24, opacity: 0, duration: 1.1, ease: 'power3.out', stagger: .12, delay: .6 });
       gsap.from('#nav', { opacity: 0, y: -12, duration: 1, delay: .5, ease: 'power3.out' });
@@ -162,7 +131,7 @@ const CONFIG = {
         ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onEnter: () => show(i), onEnterBack: () => show(i) });
       });
       ScrollTrigger.create({ trigger: '#scoala', start: 'top bottom', end: 'bottom top',
-        onLeave: () => clips[clipOn] && clips[clipOn].pause(), onEnterBack: () => clips[clipOn] && clips[clipOn].play().catch(() => {}) });
+        onLeave: () => clips[clipOn]?.querySelector('iframe')?.remove(), onEnterBack: () => { const i = clipOn; clipOn = -1; show(i); } });
       $$('[data-beat]').forEach((b) => {
         const h = $('h2', b), pic = $('figure', b), rest = $$('[data-rest]', b);
         const tl = gsap.timeline({ scrollTrigger: { trigger: b, start: 'top 75%', toggleActions: 'play none none reverse' } });
@@ -176,7 +145,7 @@ const CONFIG = {
       });
     }
     story();
-    runLoader(() => heroIn(true)).then((played) => { if (!played) heroIn(false); });
+    heroIn();
   }
 
   /* =================== GALERIA: scroll orizontal nativ (swipe, trackpad, săgeți) =================== */
@@ -185,25 +154,14 @@ const CONFIG = {
     const prev = $('[data-reel="prev"]'), next = $('[data-reel="next"]');
     const amb = [$('#ambA'), $('#ambB')]; let ambI = 0;
     const total = String(frames.length).padStart(2, '0');
-    const mediaOf = (fr) => $('img, video', fr);
-    const poster = (fr) => { const m = mediaOf(fr); return m.tagName === 'VIDEO' ? m.poster : m.currentSrc || m.src; };
-
-    // cadrele video primesc proporția din poster, ca rama să aibă lățimea corectă înainte să pornească
-    frames.forEach((fr) => {
-      const v = $('video', fr); if (!v) return;
-      const im = new Image(); im.onload = () => fr.style.setProperty('--ar', `${im.naturalWidth} / ${im.naturalHeight}`); im.src = v.poster;
-    });
+    const mediaOf = (fr) => $('img', fr);
+    const poster = (fr) => { const m = mediaOf(fr); return m.currentSrc || m.src; };
 
     let active = -1;
     function activate(i) {
       if (i === active) return;
       active = i;
-      frames.forEach((fr, j) => {
-        fr.classList.toggle('is-on', j === i);
-        const v = $('video', fr);
-        if (!v) return;
-        if (j === i) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
-      });
+      frames.forEach((fr, j) => fr.classList.toggle('is-on', j === i));
       nEl.textContent = `${String(i + 1).padStart(2, '0')} / ${total}`;
       prev.disabled = i === 0; next.disabled = i === frames.length - 1;
       ambI ^= 1; amb[ambI].src = poster(frames[i]); amb[ambI].classList.add('is-on'); amb[ambI ^ 1].classList.remove('is-on');
@@ -241,9 +199,10 @@ const CONFIG = {
       lbI = (i + frames.length) % frames.length;
       const src = mediaOf(frames[lbI]);
       let el;
-      if (src.tagName === 'VIDEO') {
-        el = document.createElement('video'); el.className = LB_MEDIA;
-        Object.assign(el, { src: src.dataset.src, poster: src.poster, muted: true, loop: true, playsInline: true, autoplay: true, controls: true });
+      if (src.dataset.yt) {
+        // clipurile vin de pe YouTube; rama are proporția posterului (orizontal sau vertical)
+        const vertical = src.naturalHeight > src.naturalWidth;
+        el = ytFrame(src.dataset.yt, false, `${LB_MEDIA} border-0 ${vertical ? 'aspect-[9/16] h-full w-auto' : 'aspect-video w-full h-auto'}`);
       } else {
         el = document.createElement('img'); el.className = LB_MEDIA; el.src = src.dataset.full; el.alt = src.alt;
       }
