@@ -29,7 +29,7 @@ CLASSES = {
     'heroline': 'invisible absolute bottom-0 left-0 max-w-[12em] [&.is-on]:visible',
     'filmclip': 'absolute inset-0 size-full object-cover opacity-0 scale-[1.08] brightness-[.42] saturate-[.75] contrast-[1.05] '
                 '[transition:opacity_1.6s_var(--ease-soft),scale_8s_linear] [&.is-on]:opacity-100 [&.is-on]:scale-100',
-    'beat': 'grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] '
+    'beat': 'mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] px-gut py-[9vh] '
             'wide:min-h-[76svh] wide:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] wide:py-[8vh]',
     'kicker': 'm-0 mb-4 text-[13px] leading-[1.3] font-semibold text-ochre',
     'beath': 'm-0 text-[clamp(40px,5.6vw,92px)] leading-[.98] font-[760] font-stretch-108% tracking-[-.04em] [text-shadow:0_2px_30px_rgba(0,0,0,.25)]',
@@ -54,6 +54,8 @@ CLASSES = {
     'footlink': 'text-bone/80 underline-offset-4 transition-colors hover:text-bone hover:underline',
     'social': 'grid size-10 place-items-center rounded-full bg-bone/10 text-bone transition-colors hover:bg-ochre hover:text-ink',
     'reelbtn': 'grid size-11 cursor-pointer place-items-center rounded-full bg-bone/10 text-[26px] leading-none text-bone transition-colors hover:bg-bone/20 disabled:cursor-default disabled:opacity-30',
+    # secțiunile cu fundal pe toată lățimea își aliniază conținutul cu hero-ul (max 1440px, centrat)
+    'alignpad': 'wide:px-[max(calc(var(--spacing-gut)-12px),calc(50%-732px+var(--spacing-gut)))]',
     'lbnav': 'absolute top-1/2 hidden size-[52px] -translate-y-1/2 cursor-pointer rounded-full bg-bone/10 text-[30px] leading-none hover:bg-bone/20 wide:block',
 }
 

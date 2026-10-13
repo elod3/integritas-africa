@@ -36,12 +36,12 @@
 <main>
   <!-- HERO: o poză, un titlu care cere ajutor, și donația chiar lângă el -->
   <section id="acasa" aria-labelledby="heroTitle" class="relative z-2 overflow-hidden bg-ink {grain}">
-    <div data-hero class="absolute inset-x-0 top-0 h-svh">
+    <div data-hero class="absolute inset-x-0 top-0 h-svh overflow-hidden">
       <img class="is-on {heroimg}" src="assets/img/scoala-2400.webp" srcset="assets/img/scoala-1200.webp 1200w, assets/img/scoala-2400.webp 2400w" sizes="100vw" fetchpriority="high" alt="Copiii de la grădinița și școala primară Kusekwa, în fața clădirii, lângă Bariadi">
     </div>
     <div data-shade class="absolute inset-x-0 top-0 h-svh">
       <div class="absolute inset-0 bg-linear-to-b from-ink/80 via-ink/40 via-12% to-transparent to-28%"></div>
-      <div class="absolute inset-0 bg-linear-to-t from-ink/95 via-ink/55 via-45% to-ink/10"></div>
+      <div class="absolute inset-0 bg-linear-to-t from-ink via-ink/55 via-45% to-ink/10"></div>
       <div class="absolute inset-0 hidden bg-linear-to-r from-ink/70 via-ink/20 via-50% to-ink/50 wide:block"></div>
     </div>
     <div class="relative z-10 mx-auto grid min-h-svh max-w-[1440px] grid-cols-1 items-end gap-8 px-gut pt-28 pb-10 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:gap-[clamp(32px,5vw,88px)] wide:pb-[clamp(40px,8vh,88px)]">
@@ -87,7 +87,7 @@
     <!-- GALERIA: în jos derulezi pagina, într-o parte derulezi pozele (swipe, trackpad sau săgeți); click = mărește -->
     <section id="galerie" aria-labelledby="galTitle" class="relative z-1 overflow-hidden bg-ink py-[clamp(64px,10vh,112px)] {grain}">
       <div aria-hidden="true" class="absolute -inset-[10%]"><img id="ambA" alt="" class="{amb}"><img id="ambB" alt="" class="{amb}"></div>
-      <div class="relative z-3 mb-6 flex items-end justify-between gap-4 px-gut">
+      <div class="relative z-3 mx-auto mb-6 flex max-w-[1440px] items-end justify-between gap-4 px-gut">
         <h2 id="galTitle" class="m-0 text-[clamp(32px,4vw,64px)] leading-none {display}">Galerie</h2>
         <div class="flex items-center gap-2">
           <b id="reelN" aria-hidden="true" class="mr-2 text-[13.5px] font-semibold text-bone/65 tabular-nums">01 / 11</b>
@@ -111,7 +111,7 @@
     </section>
 
     <!-- DONAȚIA, din nou la final: același card ca în hero -->
-    <section id="doneaza" aria-labelledby="giveTitle" class="relative mx-2 mb-2 grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] rounded-frame bg-panel px-4 pt-[72px] pb-4 wide:mx-3 wide:mb-3 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:px-[clamp(20px,5vw,72px)] wide:py-[clamp(64px,10vh,120px)]">
+    <section id="doneaza" aria-labelledby="giveTitle" class="relative mx-2 mb-2 grid grid-cols-1 items-center gap-[clamp(28px,6vw,96px)] rounded-frame bg-panel px-4 pt-[72px] pb-4 wide:mx-3 wide:mb-3 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:py-[clamp(64px,10vh,120px)] {alignpad}">
       <div class="px-1.5 wide:px-0">
         <h2 id="giveTitle" class="m-0 text-[clamp(48px,7vw,124px)] leading-[.95] {display}">Pune o<br>cărămidă.</h2>
         <p data-rest class="mt-5 max-w-md text-[clamp(16px,1.4vw,20px)] text-bone/65">O biserică și un dispensar pentru Kusekwa. Puțin și puțin umple măsura.</p>
@@ -120,7 +120,7 @@
     </section>
 
     <!-- FOOTERUL ȘCOLII: aceleași date ca pe liceulintegritas.ro -->
-    <footer class="relative mx-2 mb-2 grid gap-10 rounded-frame bg-panel px-6 pt-10 pb-6 text-sm text-bone/65 wide:mx-3 wide:mb-3 wide:grid-cols-[1.2fr_1fr_1.4fr_1fr] wide:px-[clamp(20px,5vw,72px)] wide:pt-14">
+    <footer class="relative mx-2 mb-2 grid gap-10 rounded-frame bg-panel px-6 pt-10 pb-6 text-sm text-bone/65 wide:mx-3 wide:mb-3 wide:grid-cols-[1.2fr_1fr_1.4fr_1fr] wide:pt-14 {alignpad}">
       <a href="https://liceulintegritas.ro" class="self-start" aria-label="Liceul Internațional Integritas"><img src="assets/img/integritas-logo.svg" alt="Integritas, Ready to serve" class="h-12 w-auto" loading="lazy"></a>
       <div>
         <p class="{foothead}">Program</p>
