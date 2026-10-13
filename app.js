@@ -50,7 +50,7 @@ const CONFIG = {
   const ytSrc = (id, bg) => `https://www.youtube-nocookie.com/embed/${id}?` + new URLSearchParams(bg
     ? { autoplay: 1, mute: 1, controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1, iv_load_policy: 3, fs: 0, enablejsapi: 1, origin: location.origin }
     : { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 });
-  const ytSay = (f, func, args = []) => f.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
+  const ytSay = (f, func, args = []) => f?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
   addEventListener('message', (e) => {
     if (!/youtube(-nocookie)?\.com$/.test(new URL(e.origin).hostname)) return;
     let d; try { d = JSON.parse(e.data); } catch (err) { return; }
@@ -58,6 +58,12 @@ const CONFIG = {
     if (!f) return;
     const state = d.event === 'onStateChange' ? d.info : d.info?.playerState;
     if (state === 0) { ytSay(f, 'seekTo', [0, true]); ytSay(f, 'playVideo'); }   // s-a terminat: de la capăt
+    if (state === 1) {                                                              // a pornit: îl arătăm peste poster
+      f.classList.add('is-on');
+      f.parentElement.querySelector('span[aria-hidden]')?.classList.add('opacity-0');
+      // clipurile de fundal pregătite din timp așteaptă pe pauză până le vine rândul
+      if (f.closest('#film') && !f.parentElement.classList.contains('is-on')) ytSay(f, 'pauseVideo');
+    }
   });
   const ytFrame = (id, bg, cls) => {
     const f = document.createElement('iframe');
@@ -77,22 +83,23 @@ const CONFIG = {
   /* ---------- FILMUL DIN SPATE: planuri care se schimbă de la o secțiune la alta ---------- */
   const film = $('#film'), clips = film ? [...film.children] : [];
   let clipOn = -1;
+  // iframe-ul se pune o dată și rămâne; între secțiuni doar pornim și oprim clipurile
+  const ensure = (box) => { if (box && !box.querySelector('iframe')) box.appendChild(ytFrame(box.dataset.yt, true, BG_FRAME)); };
+  const frameOf = (i) => clips[i]?.querySelector('iframe');
   function show(i) {
     if (i === clipOn || !clips[i]) return;
     if (clipOn >= 0) {
       const old = clips[clipOn]; old.classList.remove('is-on');
-      // iframe-ul vechi pleacă după fade, ca să nu ruleze degeaba
-      setTimeout(() => { if (!old.classList.contains('is-on')) old.querySelector('iframe')?.remove(); }, 1800);
+      setTimeout(() => { if (!old.classList.contains('is-on')) ytSay(old.querySelector('iframe'), 'pauseVideo'); }, 1700);
     }
     clipOn = i;
-    const box = clips[i];
-    if (!box.querySelector('iframe')) {
-      const f = ytFrame(box.dataset.yt, true, BG_FRAME);
-      f.addEventListener('load', () => setTimeout(() => f.classList.add('is-on'), 2200), { once: true });
-      box.appendChild(f);
-    }
-    box.classList.add('is-on');
+    ensure(clips[i]); ensure(clips[i + 1]);   // și pe următorul, ca să fie gata când ajungi la el
+    clips[i].classList.add('is-on');
+    ytSay(frameOf(i), 'playVideo');
   }
+  const pauseFilm = () => clips.forEach((c) => ytSay(c.querySelector('iframe'), 'pauseVideo'));
+  // primul clip se pregătește imediat după ce s-a încărcat pagina, ca să fie deja pornit când ajungi la el
+  addEventListener('load', () => setTimeout(() => ensure(clips[0]), 1200), { once: true });
 
   /* ---------- NAVBAR ---------- */
   const nav = $('#nav');
@@ -145,7 +152,7 @@ const CONFIG = {
         ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onEnter: () => show(i), onEnterBack: () => show(i) });
       });
       ScrollTrigger.create({ trigger: '#scoala', start: 'top bottom', end: 'bottom top',
-        onLeave: () => clips[clipOn]?.querySelector('iframe')?.remove(), onEnterBack: () => { const i = clipOn; clipOn = -1; show(i); } });
+        onLeave: pauseFilm, onEnterBack: () => ytSay(frameOf(clipOn), 'playVideo') });
       $$('[data-beat]').forEach((b) => {
         const h = $('h2', b), pic = $('figure', b), rest = $$('[data-rest]', b);
         const tl = gsap.timeline({ scrollTrigger: { trigger: b, start: 'top 75%', toggleActions: 'play none none reverse' } });
@@ -189,9 +196,7 @@ const CONFIG = {
         const img = mediaOf(fr), on = galVisible && j === active && img.dataset.yt;
         const f = $('iframe', fr), badge = $('span[aria-hidden]', fr);
         if (on && !f) {
-          const nf = ytFrame(img.dataset.yt, true, GAL_FRAME);
-          nf.addEventListener('load', () => setTimeout(() => { nf.classList.add('is-on'); badge?.classList.add('opacity-0'); }, 1800), { once: true });
-          fr.appendChild(nf);
+          fr.appendChild(ytFrame(img.dataset.yt, true, GAL_FRAME));
         } else if (!on && f) { f.remove(); badge?.classList.remove('opacity-0'); }
       });
     }
