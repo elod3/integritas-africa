@@ -63,6 +63,13 @@ const CONFIG = {
     return f;
   };
 
+  // clipurile de promovare: playerul YouTube se încarcă abia la click, în locul posterului
+  $$('[data-promo]').forEach((b) => b.addEventListener('click', () => {
+    const f = ytFrame(b.dataset.promo, `${b.className} border-0`);
+    f.title = b.querySelector('span:last-child').textContent;
+    b.replaceWith(f);
+  }, { once: true }));
+
   /* ---------- FILMUL DIN SPATE: planuri care se schimbă de la o secțiune la alta ---------- */
   const film = $('#film'), clips = film ? [...film.children] : [];
   let clipOn = -1;

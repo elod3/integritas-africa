@@ -9,7 +9,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-V = '6'
+V = '7'
 
 META = dict(path='', title='Misiune în Tanzania: donează pentru Kusekwa | Integritas',
             desc='Clasa a XII-a a Liceului Integritas pleacă o lună la Kusekwa, lângă Bariadi, să construiască o biserică și un dispensar. Donează online sau prin transfer.',
@@ -55,6 +55,12 @@ CLASSES = {
     'reelbtn': 'grid size-11 cursor-pointer place-items-center rounded-full bg-bone/10 text-[26px] leading-none text-bone transition-colors hover:bg-bone/20 disabled:cursor-default disabled:opacity-30',
     # secțiunile cu fundal pe toată lățimea își aliniază conținutul cu hero-ul (max 1440px, centrat)
     'alignpad': 'wide:px-[max(calc(var(--spacing-gut)-12px),calc(50%-732px+var(--spacing-gut)))]',
+    'promo': 'group relative block aspect-video w-full cursor-pointer overflow-hidden rounded-frame border-0 bg-panel p-0 text-left text-bone '
+             'shadow-[0_30px_80px_rgba(0,0,0,.45)]',
+    'promoimg': 'absolute inset-0 size-full object-cover transition-[scale,filter] duration-700 ease-soft group-hover:scale-[1.03] group-hover:brightness-110',
+    'promoplay': 'absolute top-1/2 left-1/2 grid size-[clamp(56px,6vw,84px)] -translate-1/2 place-items-center rounded-full bg-bone pl-1 '
+                 'text-[clamp(18px,2vw,26px)] text-ink transition-[scale,background-color] duration-300 ease-soft group-hover:scale-110 group-hover:bg-ochre',
+    'promolabel': 'absolute bottom-3 left-3 rounded-btn bg-ink/80 px-3 py-2 text-[13px] leading-none font-semibold',
     'lbnav': 'absolute top-1/2 hidden size-[52px] -translate-y-1/2 cursor-pointer rounded-full bg-bone/10 text-[30px] leading-none hover:bg-bone/20 wide:block',
 }
 

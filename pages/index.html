@@ -38,6 +38,15 @@
     </div>
   </section>
 
+  <!-- CLIPURILE DE PROMOVARE: cele de pe YouTube-ul școlii; posterul rămâne până la click, abia apoi se încarcă playerul -->
+  <section id="clipuri" aria-labelledby="clipTitle" class="relative z-2 bg-ink pt-[clamp(56px,9vh,104px)] pb-[clamp(40px,6vh,72px)]">
+    <div class="mx-auto grid max-w-[1440px] grid-cols-1 items-end gap-5 px-gut wide:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] wide:gap-[clamp(20px,2.5vw,36px)]">
+      <h2 id="clipTitle" class="m-0 text-[clamp(32px,4vw,64px)] leading-none {display} wide:col-span-2">Visul clasei a XII-a</h2>
+      <button type="button" data-promo="NXLebbQVksY" class="{promo}"><img src="assets/img/promo-ro.webp" alt="" loading="lazy" class="{promoimg}"><span class="{promoplay}">▶</span><span class="{promolabel}">În română · 4:15</span></button>
+      <button type="button" data-promo="mOaRZyChB4Q" class="{promo}"><img src="assets/img/promo-en.webp" alt="" loading="lazy" class="{promoimg}"><span class="{promoplay}">▶</span><span class="{promolabel}">In English · 1:26</span></button>
+    </div>
+  </section>
+
   <!-- FILMUL DIN SPATE: bucle scurte, fără sunet, încărcate abia când ajungi la ele (clipurile întregi sunt pe YouTube) -->
   <div id="film" aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-ink after:absolute after:inset-0 after:bg-[radial-gradient(120%_90%_at_50%_50%,rgba(11,9,8,0)_40%,rgba(11,9,8,.7)_100%)] after:content-['']">
     <div data-loop="assets/loop/curte.mp4" data-yt="As-tGlI0Fdw" class="{filmclip}"><img src="assets/film/curte.webp" alt="" loading="lazy" class="absolute inset-0 size-full object-cover"></div>
@@ -48,19 +57,19 @@
 
   <div id="scoala" class="relative z-1">
     <section data-beat data-film="0" class="{beat}">
-      <div><p data-rest class="{kicker}">Bariadi · Tanzania</p><h2 class="{beath}">700 de oameni.<br>O școală.</h2></div>
+      <div><p data-rest class="{kicker}">Bariadi · Tanzania</p><h2 class="{beath}">Peste 700 de elevi.<br>O școală cu multe nevoi.</h2></div>
       <figure class="{beatpic}"><img class="{beatimg}" src="assets/img/careu-1200.webp" srcset="assets/img/careu-1200.webp 1200w, assets/img/careu-2400.webp 2400w" sizes="(min-width: 821px) 46vw, 92vw" alt="Elevii școlii Kusekwa, aliniați în curte" loading="lazy"></figure>
     </section>
     <section data-beat data-film="1" class="{beat}">
-      <div class="wide:order-2"><h2 class="{beath}">O tablă.<br>O clasă plină.</h2></div>
+      <div class="wide:order-2"><h2 class="{beath}">Clase pline.<br>Dotări puține.</h2></div>
       <figure class="{beatpic}"><img class="{beatimg}" src="assets/img/clasa-1200.webp" srcset="assets/img/clasa-1200.webp 1200w, assets/img/clasa-2400.webp 2400w" sizes="(min-width: 821px) 46vw, 92vw" alt="Elevi în bănci, într-o clasă plină" loading="lazy"></figure>
     </section>
     <section data-beat data-film="2" class="{beat}">
-      <div><h2 class="{beath}">Biserica se strânge<br>în sala școlii.</h2></div>
+      <div><h2 class="{beath}">Biserica se adună<br>în sala de mese.</h2></div>
       <figure class="{beatpic}"><img class="{beatimg}" src="assets/img/biserica-2400.webp" alt="Adunarea bisericii Kusekwa Memorial, în sala școlii" loading="lazy"></figure>
     </section>
     <section data-beat data-film="3" class="{beat}">
-      <div class="wide:order-2"><h2 class="{beath}">30 de oameni.<br>O lună.</h2><p data-rest class="mt-[18px] text-[clamp(16px,1.3vw,19px)] text-bone/85">20 de elevi. O biserică și un dispensar.</p></div>
+      <div class="wide:order-2"><h2 class="{beath}">30 de oameni.<br>O lună.</h2><p data-rest class="mt-[18px] max-w-lg text-[clamp(16px,1.3vw,19px)] leading-relaxed text-bone/85">20 de elevi și câțiva adulți pricepuți. Construim o biserică și un cabinet medical, ținem ore la clase și ducem alimente, rechizite și produse de igienă familiilor celor mai sărace. E al patrulea an la rând în care Integritas merge în Africa.</p></div>
       <figure class="{beatpic}"><img class="{beatimg}" src="assets/img/clasa12-1200.webp" alt="Clasa a XII-a a Liceului Integritas, în hanorace vișinii, pe dealul de lângă școală" loading="lazy"></figure>
     </section>
   </div>
@@ -72,12 +81,25 @@
       <div class="relative z-3 mx-auto mb-6 flex max-w-[1440px] items-end justify-between gap-4 px-gut">
         <h2 id="galTitle" class="m-0 text-[clamp(32px,4vw,64px)] leading-none {display}">Galerie</h2>
         <div class="flex items-center gap-2">
-          <b id="reelN" aria-hidden="true" class="mr-2 text-[13.5px] font-semibold text-bone/65 tabular-nums">01 / 11</b>
+          <b id="reelN" aria-hidden="true" class="mr-2 text-[13.5px] font-semibold text-bone/65 tabular-nums">01 / 24</b>
           <button type="button" data-reel="prev" aria-label="Poza dinainte" class="{reelbtn}">‹</button>
           <button type="button" data-reel="next" aria-label="Poza următoare" class="{reelbtn}">›</button>
         </div>
       </div>
       <ol id="reel" data-lenis-prevent-wheel class="relative z-3 m-0 flex list-none snap-x snap-mandatory items-center gap-[clamp(12px,2vw,28px)] overflow-x-auto overscroll-x-contain px-[max(var(--spacing-gut),calc(50vw-34vh))] py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k02-s.webp" data-full="assets/gal/k02.webp" alt="Adunarea de la Kusekwa, sub acoperișul de tablă"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k01-s.webp" data-full="assets/gal/k01.webp" alt="Elevii școlii, în curte, în uniforme mov"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k07-s.webp" data-full="assets/gal/k07.webp" alt="Sala mare, plină de elevi"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k09-s.webp" data-full="assets/gal/k09.webp" alt="Copii și un profesor de la Kusekwa, de aproape"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k03-s.webp" data-full="assets/gal/k03.webp" alt="Elevii, în jurul arcului de lemn al viitoarei biserici"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k05-s.webp" data-full="assets/gal/k05.webp" alt="Se măsoară fundația din grinzi"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k11-s.webp" data-full="assets/gal/k11.webp" alt="Cadrul fundației, pe teren"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k08-s.webp" data-full="assets/gal/k08.webp" alt="Copii strânși în jurul unui telefon, pe iarbă"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k10-s.webp" data-full="assets/gal/k10.webp" alt="Elevii, în două rânduri, pe terenul școlii"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k12-s.webp" data-full="assets/gal/k12.webp" alt="Scânduri descărcate lângă școală"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k04-s.webp" data-full="assets/gal/k04.webp" alt="Arcul de lemn, ridicat pe teren"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k06-s.webp" data-full="assets/gal/k06.webp" alt="O girafă în savană"></li>
+          <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/k13-s.webp" data-full="assets/gal/k13.webp" alt="Un elefant, lângă drum"></li>
           <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/f03-s.webp" data-full="assets/gal/f03.webp" alt="Elevii de la Integritas și sute de elevi africani, în sala cea mare"></li>
           <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/v01.webp" data-loop="assets/loop/v01.mp4" data-yt="8pc8_PnY3-w" alt="Clip: Copiii fac cu mâna spre cameră"></li>
           <li class="{fr}"><img class="{frmedia}" loading="lazy" src="assets/gal/f01-s.webp" data-full="assets/gal/f01.webp" alt="Selfie cu două eleve de la Integritas și o clasă întreagă de copii"></li>
@@ -95,8 +117,9 @@
     <!-- DONAȚIA, din nou la final: același card ca în hero -->
     <section id="doneaza" aria-labelledby="giveTitle" class="relative mx-2 mb-2 grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] rounded-frame bg-panel px-4 pt-[72px] pb-4 wide:mx-3 wide:mb-3 wide:grid-cols-[minmax(0,1fr)_minmax(0,430px)] wide:py-[clamp(64px,10vh,120px)] {alignpad}">
       <div class="px-1.5 wide:px-0">
-        <h2 id="giveTitle" class="m-0 text-[clamp(48px,7vw,124px)] leading-[.95] {display}">Pune o<br>cărămidă.</h2>
-        <p data-rest class="mt-5 max-w-md text-[clamp(16px,1.4vw,20px)] text-bone/65">O biserică și un dispensar pentru Kusekwa. Puțin și puțin umple măsura.</p>
+        <h2 id="giveTitle" class="m-0 text-[clamp(48px,7vw,124px)] leading-[.95] {display}">Picătura fiecăruia<br>contează.</h2>
+        <p data-rest class="mt-5 max-w-md text-[clamp(16px,1.4vw,20px)] text-bone/65">Cei 700 de elevi merită condiții mai bune pentru educație și închinare.</p>
+        <p data-rest class="mt-4 max-w-md text-[clamp(15px,1.2vw,17px)] leading-relaxed text-bone/85"><b class="font-[650] text-bone">Banii nu merg pe drum.</b> Fiecare elev și adult își plătește singur călătoria. Tot ce donezi ajunge în misiunea din Tanzania.</p>
       </div>
 {card:jos}
     </section>
