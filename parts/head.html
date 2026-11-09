@@ -1,13 +1,31 @@
 <!doctype html>
-<html lang="ro" class="overflow-x-clip [scrollbar-gutter:stable]">
+<html lang="{lang}" class="overflow-x-clip [scrollbar-gutter:stable]">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- LIMBA: prima vizită → limba dispozitivului (ro/en/es, altfel engleza); dacă omul a ales din buton, rămâne alegerea lui.
+     ?lang=xx forțează o limbă. Roboții de căutare nu sunt redirecționați (au fiecare pagină prin hreflang). -->
+<script>(function () {{
+  var cur = '{lang}', P = {{ ro: './', en: 'en.html', es: 'es.html' }}, s = null;
+  try {{
+    var q = new URLSearchParams(location.search).get('lang');
+    if (P[q]) {{ s = q; localStorage.setItem('lang', q); }} else s = localStorage.getItem('lang');
+  }} catch (e) {{}}
+  if (!P[s]) {{
+    if (/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent)) return;
+    var L = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    s = null;
+    for (var i = 0; i < L.length && !s; i++) {{ var c = String(L[i]).slice(0, 2).toLowerCase(); if (P[c]) s = c; }}
+    s = s || 'en';
+  }}
+  if (s !== cur) location.replace(P[s] + location.search + location.hash);
+}})();</script>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://elod3.github.io/integritas-africa/{path}">
+{alternates}
 <meta property="og:type" content="website">
-<meta property="og:locale" content="ro_RO">
+<meta property="og:locale" content="{locale}">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="https://elod3.github.io/integritas-africa/{path}">

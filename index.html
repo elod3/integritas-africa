@@ -3,9 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- LIMBA: prima vizită → limba dispozitivului (ro/en/es, altfel engleza); dacă omul a ales din buton, rămâne alegerea lui.
+     ?lang=xx forțează o limbă. Roboții de căutare nu sunt redirecționați (au fiecare pagină prin hreflang). -->
+<script>(function () {
+  var cur = 'ro', P = { ro: './', en: 'en.html', es: 'es.html' }, s = null;
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    if (P[q]) { s = q; localStorage.setItem('lang', q); } else s = localStorage.getItem('lang');
+  } catch (e) {}
+  if (!P[s]) {
+    if (/bot|crawl|spider|slurp|preview|lighthouse/i.test(navigator.userAgent)) return;
+    var L = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    s = null;
+    for (var i = 0; i < L.length && !s; i++) { var c = String(L[i]).slice(0, 2).toLowerCase(); if (P[c]) s = c; }
+    s = s || 'en';
+  }
+  if (s !== cur) location.replace(P[s] + location.search + location.hash);
+})();</script>
 <title>Misiune în Tanzania: donează pentru Kusekwa | Integritas</title>
 <meta name="description" content="Clasa a XII-a a Liceului Integritas pleacă o lună la Kusekwa, lângă Bariadi, să construiască o biserică și un dispensar. Donează online sau prin transfer.">
 <link rel="canonical" href="https://elod3.github.io/integritas-africa/">
+<link rel="alternate" hreflang="ro" href="https://elod3.github.io/integritas-africa/">
+<link rel="alternate" hreflang="en" href="https://elod3.github.io/integritas-africa/en.html">
+<link rel="alternate" hreflang="es" href="https://elod3.github.io/integritas-africa/es.html">
+<link rel="alternate" hreflang="x-default" href="https://elod3.github.io/integritas-africa/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ro_RO">
 <meta property="og:title" content="Misiune în Tanzania: donează pentru Kusekwa | Integritas">
@@ -44,6 +65,7 @@
   <a href="#acasa" class="mr-auto flex items-center" aria-label="Liceul Internațional Integritas, la începutul paginii">
     <img src="assets/img/integritas-logo.svg" alt="Liceul Internațional Integritas" class="h-6 w-auto drop-shadow-[0_1px_10px_rgba(0,0,0,.7)] wide:h-7" width="332" height="72">
   </a>
+  <details id="lang" class="group relative"><summary aria-label="Limba" class="flex cursor-pointer list-none items-center gap-1.5 rounded-btn px-3 py-[11px] text-[13.5px] leading-none font-semibold text-bone/65 transition-colors duration-300 hover:bg-bone/10 hover:text-bone group-open:bg-bone/10 group-open:text-bone [&::-webkit-details-marker]:hidden">RO<span aria-hidden="true" class="text-[9px] transition-transform duration-300 group-open:rotate-180">▼</span></summary><div class="absolute top-[calc(100%+10px)] right-0 grid min-w-44 gap-0.5 rounded-card bg-panel p-1.5 shadow-[0_20px_60px_rgba(0,0,0,.5),inset_0_0_0_1px_rgba(242,236,227,.14)] wide:right-auto wide:left-0"><a href="index.html" hreflang="ro" lang="ro" aria-current="page" class="flex items-center justify-between gap-6 rounded-btn px-3 py-2.5 text-[14px] leading-none font-semibold text-bone/75 transition-colors hover:bg-bone/10 hover:text-bone aria-[current=page]:text-bone">Română<span class="text-[11px] tracking-wide text-ochre">RO</span></a><a href="en.html" hreflang="en" lang="en" class="flex items-center justify-between gap-6 rounded-btn px-3 py-2.5 text-[14px] leading-none font-semibold text-bone/75 transition-colors hover:bg-bone/10 hover:text-bone aria-[current=page]:text-bone">English<span class="text-[11px] tracking-wide text-ochre">EN</span></a><a href="es.html" hreflang="es" lang="es" class="flex items-center justify-between gap-6 rounded-btn px-3 py-2.5 text-[14px] leading-none font-semibold text-bone/75 transition-colors hover:bg-bone/10 hover:text-bone aria-[current=page]:text-bone">Español<span class="text-[11px] tracking-wide text-ochre">ES</span></a></div></details>
   <nav class="hidden gap-1 wide:flex" aria-label="Secțiuni">
     <a href="#galerie" class="rounded-btn px-3.5 py-[11px] text-[13.5px] leading-none font-semibold text-bone/65 transition-colors duration-300 hover:bg-bone/10 hover:text-bone">Galerie</a>
   </nav>
@@ -283,6 +305,7 @@
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
+<script>window.I18N = {"menu": "Meniu", "close": "Închide", "copied": "Copiat", "manual": "Selectează manual", "cur": "lei", "clip": "Clip de la Kusekwa", "all": ["Către: Fundația Educatio Plena", "IBAN lei: RO77 RZBR 0000 0600 1886 6089", "IBAN euro: RO27 RZBR 0000 0600 2135 5524", "Banca: Raiffeisen Bank, BIC RZBRROBU", "Mențiune: Africa Kusekwa"]};</script>
 <script src="app.js?v=7"></script>
 </body>
 </html>

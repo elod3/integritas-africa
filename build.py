@@ -3,10 +3,15 @@
 
 Stilul e numai Tailwind. Clasele care se repetă (cadrele din galerie, clipurile din fundal, rândurile
 de la transfer) stau o singură dată în CLASSES și se pun în pagină prin {nume}. Tot aici se pun singure
-width/height la pozele locale. Rulează: python3 build.py"""
+width/height la pozele locale. Rulează: python3 build.py
+
+Pagina se scrie în trei limbi (index.html = română, en.html, es.html); traducerile sunt în i18n.py."""
+import json
 import re
 import subprocess
 from pathlib import Path
+
+from i18n import JS, LANGS, T
 
 ROOT = Path(__file__).parent
 V = '7'
@@ -94,10 +99,73 @@ def fill(text):
     return re.sub(r'\{(\w+)\}', lambda m: V if m.group(1) == 'v' else CLASSES[m.group(1)], text)
 
 
-head = (ROOT / 'parts' / 'head.html').read_text().format(v=V, **META)
-body = fill((ROOT / 'pages' / 'index.html').read_text())
-(ROOT / 'index.html').write_text(sized(head + body))
-print('index.html')
+SITE = 'https://elod3.github.io/integritas-africa/'
+LANG_NAMES = {'ro': 'Română', 'en': 'English', 'es': 'Español'}
+_ATTR = re.compile(r'\b(alt|aria-label|placeholder|content|title|locale)="([^"]*)"')
+_TEXT = re.compile(r'>([^<]+)<')
+_JSON = re.compile(r'("(?:name|description)": ")([^"]+)(")')
+RO_LETTERS = re.compile('[ăâîșțĂÂÎȘȚ]')
+# rămân în română în orice limbă: numele fundației, adresa școlii, numele limbii și eticheta clipului românesc
+KEEP = ('Fundația Educatio Plena', 'Budiu Mic, Com. Crăciunești, Str. Integritas, Nr. 1, Jud. Mureș', 'Română', 'În română · 4:15')
+
+
+def lang_switch(code):
+    """Butonul de limbă din bară: arată limba curentă, lista se deschide la click (fără JS, cu <details>)."""
+    items = ''.join(
+        f'<a href="{LANGS[c][0]}" hreflang="{c}" lang="{c}"'
+        + (' aria-current="page"' if c == code else '')
+        + ' class="flex items-center justify-between gap-6 rounded-btn px-3 py-2.5 text-[14px] leading-none font-semibold text-bone/75 '
+          'transition-colors hover:bg-bone/10 hover:text-bone aria-[current=page]:text-bone">'
+        + f'{LANG_NAMES[c]}<span class="text-[11px] tracking-wide text-ochre">{LANGS[c][3]}</span></a>'
+        for c in LANGS)
+    return ('<details id="lang" class="group relative">'
+            '<summary aria-label="Limba" class="flex cursor-pointer list-none items-center gap-1.5 rounded-btn px-3 py-[11px] text-[13.5px] '
+            'leading-none font-semibold text-bone/65 transition-colors duration-300 hover:bg-bone/10 hover:text-bone '
+            'group-open:bg-bone/10 group-open:text-bone [&::-webkit-details-marker]:hidden">'
+            f'{LANGS[code][3]}<span aria-hidden="true" class="text-[9px] transition-transform duration-300 group-open:rotate-180">▼</span></summary>'
+            '<div class="absolute top-[calc(100%+10px)] right-0 grid min-w-44 gap-0.5 rounded-card bg-panel p-1.5 '
+            'shadow-[0_20px_60px_rgba(0,0,0,.5),inset_0_0_0_1px_rgba(242,236,227,.14)] wide:right-auto wide:left-0">'
+            f'{items}</div></details>')
+
+
+def translate(html, code):
+    """Înlocuiește textele românești cu traducerea din i18n.T: noduri de text, atribute și JSON-LD."""
+    if code == 'ro':
+        return html
+    k = 0 if code == 'en' else 1
+    def tr(text):
+        core = text.strip()
+        if core in T:
+            return text.replace(core, T[core][k])
+        return text
+    html = _TEXT.sub(lambda m: '>' + tr(m.group(1)) + '<', html)
+    html = _ATTR.sub(lambda m: f'{m.group(1)}="{tr(m.group(2))}"', html)
+    html = _JSON.sub(lambda m: m.group(1) + tr(m.group(2)) + m.group(3), html)
+    # nu publicăm o pagină pe jumătate tradusă: orice text cu litere românești rămas oprește build-ul
+    left = []
+    visible = re.sub(r'<!--.*?-->|<script\b[^>]*>.*?</script>|<svg\b.*?</svg>', '', html, flags=re.S)
+    for t in _TEXT.findall(visible) + [v for _, v in _ATTR.findall(visible)]:
+        t2 = t
+        for keep in KEEP:
+            t2 = t2.replace(keep, '')
+        if RO_LETTERS.search(t2) or T.get(t.strip(), (t.strip(),) * 2)[k] != t.strip():
+            left.append(t.strip())
+    if left:
+        raise SystemExit(f'{code}: text netradus:\n  ' + '\n  '.join(dict.fromkeys(left)))
+    return html
+
+
+head_tpl = (ROOT / 'parts' / 'head.html').read_text()
+body_tpl = (ROOT / 'pages' / 'index.html').read_text()
+alternates = '\n'.join([f'<link rel="alternate" hreflang="{c}" href="{SITE}{f if f != "index.html" else ""}">' for c, (f, *_) in LANGS.items()]
+                       + [f'<link rel="alternate" hreflang="x-default" href="{SITE}">'])
+for code, (fname, lang, locale, _) in LANGS.items():
+    path = '' if fname == 'index.html' else fname
+    head = head_tpl.format(v=V, lang=lang, locale=locale, alternates=alternates, **{**META, 'path': path})
+    body = fill(body_tpl.replace('{langs}', lang_switch(code)))
+    body = body.replace('<script src="app.js', f'<script>window.I18N = {json.dumps(JS[code], ensure_ascii=False)};</script>\n<script src="app.js', 1)
+    (ROOT / fname).write_text(translate(sized(head + body), code))
+    print(fname)
 
 # adresele vechi (site-ul a fost o vreme pe mai multe pagini) duc la secțiunea lor
 for old, anchor in {'drum': 'acasa', 'galerie': 'galerie', 'doneaza': 'doneaza'}.items():

@@ -8,6 +8,15 @@ lângă Bariadi, în Tanzania (12 ianuarie – 10 februarie 2027).
 O singură pagină, statică (fără server): hero cu donația, școala, galeria și donația din nou.
 Stilul e numai **Tailwind CSS v4**.
 
+## Limbile
+
+Pagina e în trei limbi, aceleași ca ale clipurilor de promovare: `index.html` (română, originalul), `en.html`, `es.html`.
+Butonul din bară (lângă „Galerie”) schimbă limba. La prima vizită pagina alege limba dispozitivului (română,
+spaniolă, iar pentru orice altă limbă engleza); ce alege omul din buton se ține minte. `?lang=en` forțează o limbă.
+
+Textul se scrie doar în română, în `pages/index.html` și `parts/`. Traducerile stau în `i18n.py`, cu textul românesc
+exact drept cheie. Dacă schimbi un text, schimbă-l și acolo: `build.py` se oprește când găsește text netradus.
+
 ## Plata online (Stripe)
 
 Pagina are deja sumele, butoanele Apple Pay / Google Pay și „Donează cu cardul”. Ele trimit omul

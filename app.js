@@ -14,6 +14,7 @@ const CONFIG = {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const html = document.documentElement;
+  const L = window.I18N;   // textele din JS, în limba paginii (le pune build.py din i18n.py)
   const STILL = new URLSearchParams(location.search).has('still');
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const motion = !RM && !STILL && window.gsap;
@@ -59,7 +60,7 @@ const CONFIG = {
   const ytFrame = (id, cls) => {
     const f = document.createElement('iframe');
     f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
-    f.className = cls; f.title = 'Clip de la Kusekwa'; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.className = cls; f.title = L.clip; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     return f;
   };
 
@@ -103,9 +104,20 @@ const CONFIG = {
   burger.addEventListener('click', () => {
     const open = burger.getAttribute('aria-expanded') !== 'true';
     burger.setAttribute('aria-expanded', open); menu.hidden = !open;
-    $('span', burger).textContent = open ? 'Închide' : 'Meniu';
+    $('span', burger).textContent = open ? L.close : L.menu;
     if (open && motion) gsap.from($$('a', menu), { yPercent: 40, opacity: 0, stagger: .07, duration: .9, ease: 'power4.out' });
   });
+
+  // limba: lista se închide la click în afara ei; schimbarea limbii te lasă în aceeași secțiune
+  const langBox = $('#lang');
+  if (langBox) {
+    document.addEventListener('click', (e) => { if (!langBox.contains(e.target)) langBox.open = false; });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') langBox.open = false; });
+    $$('a', langBox).forEach((a) => a.addEventListener('click', () => {
+      try { localStorage.setItem('lang', a.hreflang); } catch (e) {}   // alegerea omului bate limba dispozitivului
+      a.href = a.getAttribute('href').split('#')[0] + location.hash;
+    }));
+  }
 
   /* ---------- scroll lin ---------- */
   let lenis = null;
@@ -254,12 +266,11 @@ const CONFIG = {
 
   /* =================== DONEAZĂ: același card în hero și la final =================== */
   function doneaza() {
-    const ALL = ['Către: Fundația Educatio Plena', 'IBAN lei: RO77 RZBR 0000 0600 1886 6089', 'IBAN euro: RO27 RZBR 0000 0600 2135 5524',
-      'Banca: Raiffeisen Bank, BIC RZBRROBU', 'Mențiune: Africa Kusekwa'].join('\n');
+    const ALL = L.all.join('\n');
     const copy = async (b, text) => {
       const label = b.dataset.label || (b.dataset.label = b.textContent);
-      try { await navigator.clipboard.writeText(text); b.textContent = 'Copiat'; b.classList.add('ok'); }
-      catch (e) { b.textContent = 'Selectează manual'; }
+      try { await navigator.clipboard.writeText(text); b.textContent = L.copied; b.classList.add('ok'); }
+      catch (e) { b.textContent = L.manual; }
       setTimeout(() => { b.textContent = label; b.classList.remove('ok'); }, 2000);
     };
 
@@ -285,7 +296,7 @@ const CONFIG = {
         u.searchParams.set('client_reference_id', CONFIG.stripeTag);
         location.href = u.toString();
       };
-      const refresh = () => { $('[data-amt-label]', card).textContent = `${amount()} lei`; };
+      const refresh = () => { $('[data-amt-label]', card).textContent = `${amount()} ${L.cur}`; };
       radios.forEach((r) => r.addEventListener('change', () => { other.value = ''; refresh(); }));
       other.addEventListener('input', () => { if (parseInt(other.value, 10) >= 5) radios.forEach((r) => (r.checked = false)); refresh(); });
       $('[data-card]', card).addEventListener('click', pay);
@@ -302,7 +313,7 @@ const CONFIG = {
       onload: () => {
         try {
           const client = new google.payments.api.PaymentsClient({ environment: CONFIG.googlePayEnv });
-          gpays.forEach(([box, pay]) => box.appendChild(client.createButton({ onClick: pay, buttonType: 'donate', buttonColor: 'white', buttonSizeMode: 'fill', buttonLocale: 'en', buttonRadius: 10 })));
+          gpays.forEach(([box, pay]) => box.appendChild(client.createButton({ onClick: pay, buttonType: 'donate', buttonColor: 'white', buttonSizeMode: 'fill', buttonLocale: document.documentElement.lang, buttonRadius: 10 })));
         } catch (e) { gpays.forEach(([box]) => box.remove()); }
       },
       onerror: () => gpays.forEach(([box]) => box.remove()),
